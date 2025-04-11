@@ -3,7 +3,7 @@ import React from 'react'
 import { Image } from 'expo-image'
 import { StyleSheet } from 'react-native'
 
-const Message = ({isActive = false}: {isActive?: boolean}) => {
+const Message = ({isActive = false, isSeen = false}: {isActive?: boolean, isSeen?: boolean}) => {
      return (
           <TouchableOpacity activeOpacity={0.6} className='h-[80px] flex-row p-[10px] pl-6 border-b border-gray-200 gap-6'>
                <View className='w-[60px] h-[60px] rounded-[30px] overflow-hidden'>
@@ -17,8 +17,11 @@ const Message = ({isActive = false}: {isActive?: boolean}) => {
                </View>
                <View className='flex-1 justify-center'>
                     <Text className='text-black text-xl'>Huỳnh Vũ Nhật Linh</Text>
-                    <Text numberOfLines={2} className='text-gray-400 font-light truncate'>Thiên lý ơi em có thể ở lại đây không biết chăng ngoài trời mưa giông nhiều cô đơn lắm em,mmmmmmmmmmmmmmmmmmm</Text>
+                    <Text numberOfLines={2} className={`${isSeen ? 'text-gray-800 font-semibold' : 'text-gray-400 font-light'} truncate`}>Thiên lý ơi em có thể ở lại đây không biết chăng ngoài trời mưa giông nhiều cô đơn lắm em,mmmmmmmmmmmmmmmmmmm</Text>
 
+               </View>
+               <View>
+                    
                </View>
 
           </TouchableOpacity>

@@ -6,12 +6,11 @@ const Page = () => {
   return (
     <View className='bg-white flex-1 '>
       <ScrollView>
+        <Message isSeen={true}></Message>
+        <Message isSeen={true}></Message>
+        <Message isSeen={true}></Message>
         <Message></Message>
-        <Message></Message>
-        <Message></Message>
-        <Message></Message>
-        <Message></Message>
-        <Message></Message>
+        <Message isSeen={true}></Message>
         <Message></Message>
         <Message></Message>
         <Message></Message>
