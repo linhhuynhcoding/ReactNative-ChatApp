@@ -6,10 +6,12 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 import "@/global.css";
+import Toast from 'react-native-toast-message';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { View } from 'react-native';
 import Header from '@/components/Header';
+import { QueryProvider } from '@/components/query-provider';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -34,9 +36,10 @@ function InitialLayout() {
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack>
           <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="login" options={{ header: () => (<Header tittle='Đăng nhập'></Header>)}} />
-          
-          <Stack.Screen name="(tabs)" options={{ header: () => (<Header></Header>)}} />
+          <Stack.Screen name="login" options={{ header: () => (<Header tittle='Đăng nhập'></Header>) }} />
+          <Stack.Screen name="register" options={{ header: () => (<Header tittle='Đăng ký tài khoản'></Header>) }} />
+
+          <Stack.Screen name="(tabs)" options={{ header: () => (<Header></Header>) }} />
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />
@@ -47,9 +50,12 @@ function InitialLayout() {
 
 const RootLayoutNav = () => {
   return (
-    <InitialLayout>
+    <QueryProvider>
+      <InitialLayout>
+      </InitialLayout>
+      <Toast />
+    </QueryProvider>
 
-    </InitialLayout>
   )
 
 }

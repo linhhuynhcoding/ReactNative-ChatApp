@@ -53,7 +53,7 @@ export default function Page() {
                                         </TouchableOpacity>
                                    </Link>
                                    <Link
-                                        href={'/login'}
+                                        href={'/register'}
                                         className="bg-gray-200 rounded-3xl w-full flex items-center p-4"
                                         // style={[defaultStyles.pillButton, { flex: 1, backgroundColor: '#fff' }]}
                                         asChild>
