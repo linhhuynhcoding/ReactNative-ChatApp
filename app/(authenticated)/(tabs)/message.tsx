@@ -9,8 +9,8 @@ const Page = () => {
         <Message isSeen={true}></Message>
         <Message isSeen={true}></Message>
         <Message isSeen={true}></Message>
-        <Message></Message>
-        <Message isSeen={true}></Message>
+        <Message isMuted={true}></Message>
+        <Message isSeen={true} isMuted={true}></Message>
         <Message></Message>
         <Message></Message>
         <Message></Message>
