@@ -4,15 +4,20 @@ import { StyleSheet } from 'react-native'
 import { useAssets } from 'expo-asset';
 import { Link, useRouter } from "expo-router";
 import { useState } from "react";
+import { useAppContext } from "@/context/AppContext";
 
 export default function Page() {
      const router = useRouter();
      const [assets] = useAssets([require('@/assets/images/bg.png'), require('@/assets/images/ZolaBlue.png')]);
      const [showBg, setShowBg] = useState(true);
+     const { isAuth } = useAppContext();
 
 
      setTimeout(() => {
           setShowBg(false);
+          if (isAuth) {
+               router.replace("/(authenticated)/(tabs)")
+          }
      }, 2000)
 
      return (

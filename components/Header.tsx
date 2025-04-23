@@ -7,6 +7,13 @@ import { AntDesign, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
 import { Link, router } from 'expo-router';
 
+import {
+     Menu,
+     MenuOptions,
+     MenuOption,
+     MenuTrigger,
+} from 'react-native-popup-menu';
+
 const Header = ({ path = "", isSearch = false, tittle }: { path?: string, tittle?: string, isSearch?: boolean }) => {
      console.log(path);
 
@@ -42,9 +49,38 @@ const Header = ({ path = "", isSearch = false, tittle }: { path?: string, tittle
                                                   >Tìm kiếm</Text>
                                              </Link>
                                         </TouchableOpacity>
-                                        <View className='w-auto flex-row self-stretch items-center gap-6 pr-4'>
-                                             <MaterialIcons name="qr-code-scanner" size={20} color="white" />
-                                             <AntDesign name="plus" size={24} color="white" />
+                                        <View className='flex-1'>
+
+                                        </View>
+                                        <View className='w-auto items-stretch  flex-row self-stretch items-center pr-4'>
+                                             <View className='flex justify-center p-2'>
+                                                  <MaterialIcons name="qr-code-scanner" size={20} color="white" />
+                                             </View>
+                                             <View className='flex justify-center p-2'>
+                                                  <Menu>
+                                                       <MenuTrigger >
+                                                            <AntDesign name="plus" size={24} color="white" />
+                                                       </MenuTrigger>
+                                                       <MenuOptions customStyles={{
+                                                            optionsContainer: {
+                                                                 padding: 2
+                                                            }
+                                                       }}>
+                                                            <MenuOption onSelect={() => alert(`Save`)} >
+                                                                 <View className='flex flex-row pl-2 gap-4 items-center'>
+                                                                      <AntDesign className='' name="adduser" size={24} color="black" />
+                                                                      <Text style={{ padding: 2 }}>Thêm bạn</Text>
+                                                                 </View>
+                                                            </MenuOption>
+                                                            <MenuOption onSelect={() => alert(`Delete`)} >
+                                                                 <View className='flex flex-row pl-2 gap-4 items-center'>
+                                                                      <AntDesign name="addusergroup" size={24} color="black" />
+                                                                      <Text style={{}}>Tạo nhóm</Text>
+                                                                 </View>
+                                                            </MenuOption>
+                                                       </MenuOptions>
+                                                  </Menu>
+                                             </View>
                                         </View>
                                    </>
                                    :

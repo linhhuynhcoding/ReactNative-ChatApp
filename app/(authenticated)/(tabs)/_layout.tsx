@@ -27,7 +27,7 @@ export default function TabLayout() {
           default: {},
         }),
       }}>
-      <Tabs.Screen
+      {/* <Tabs.Screen
         name="index"
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
@@ -42,7 +42,7 @@ export default function TabLayout() {
           title: 'Tìm tiếm',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
         }}
-      />
+      /> */}
       <Tabs.Screen
         name="message"
         options={{

@@ -4,11 +4,15 @@ import { FontAwesome5 } from '@expo/vector-icons'
 import { useLoginMutation } from '@/queries/useAuth';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useAppContext } from '@/context/AppContext';
+import { useRouter } from 'expo-router';
 
 const Page = () => {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [showPass, setShowPass] = useState(true)
+  const { setAuth } = useAppContext();
 
   const useLogin = useLoginMutation();
 
@@ -29,6 +33,9 @@ const Page = () => {
         type: 'success',
         text1: "Đăng nhập thành công"
       })
+
+      setAuth(true);
+      router.push("/(authenticated)/(tabs)");
     }
     catch (e) {
       console.log(e);

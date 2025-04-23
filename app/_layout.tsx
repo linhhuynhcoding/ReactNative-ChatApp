@@ -12,6 +12,9 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import { View } from 'react-native';
 import Header from '@/components/Header';
 import { QueryProvider } from '@/components/query-provider';
+import { AppProvider } from '@/context/AppContext';
+import { UserInactivityProvider } from '@/context/UserInactivity';
+import { MenuProvider } from 'react-native-popup-menu';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -39,7 +42,10 @@ function InitialLayout() {
           <Stack.Screen name="login" options={{ header: () => (<Header tittle='Đăng nhập'></Header>) }} />
           <Stack.Screen name="register" options={{ header: () => (<Header tittle='Đăng ký tài khoản'></Header>) }} />
 
-          <Stack.Screen name="(tabs)" options={{ header: () => (<Header></Header>) }} />
+          <Stack.Screen name="(authenticated)/(tabs)" options={{
+            header: () =>
+              (<Header isSearch={true} ></Header>)
+          }} />
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />
@@ -50,11 +56,18 @@ function InitialLayout() {
 
 const RootLayoutNav = () => {
   return (
-    <QueryProvider>
-      <InitialLayout>
-      </InitialLayout>
-      <Toast />
-    </QueryProvider>
+    <AppProvider>
+      <UserInactivityProvider>
+        <QueryProvider>
+          <MenuProvider>
+            <InitialLayout>
+            </InitialLayout>
+            <Toast />
+          </MenuProvider>
+        </QueryProvider>
+      </UserInactivityProvider>
+    </AppProvider>
+
 
   )
 
