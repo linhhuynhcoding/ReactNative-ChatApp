@@ -46,6 +46,10 @@ function InitialLayout() {
             header: () =>
               (<Header isSearch={true} ></Header>)
           }} />
+          <Stack.Screen name="(authenticated)/conversation/[id]" options={{
+            header: () =>
+              (<Header></Header>)
+          }} />
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />

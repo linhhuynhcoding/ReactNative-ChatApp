@@ -21,7 +21,7 @@ export default function Page() {
      }, 2000)
 
      return (
-          <View className="flex-1 justify-between items-center">
+          <View className="flex-1 justify-between items-center bg-white">
                {
                     showBg
                          ?

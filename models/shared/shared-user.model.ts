@@ -10,4 +10,8 @@ export const UserSchema = z.object({
   updatedAt: z.date(),
 });
 
+export const UserResDTO = UserSchema.omit({ password: true });
+
+
 export type UserType = z.infer<typeof UserSchema>;
+export type UserResDTOType = z.infer<typeof UserResDTO>;
