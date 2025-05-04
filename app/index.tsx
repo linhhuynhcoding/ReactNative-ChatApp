@@ -3,22 +3,45 @@ import { Image } from "expo-image";
 import { StyleSheet } from 'react-native'
 import { useAssets } from 'expo-asset';
 import { Link, useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppContext } from "@/context/AppContext";
+import { getAccessToken } from "@/lib/utils";
+import { useMessageStore } from "@/store/zustand";
+import { bootstrap } from "@/services/socket.service";
+import { userApi } from "@/apis/user";
 
 export default function Page() {
      const router = useRouter();
      const [assets] = useAssets([require('@/assets/images/bg.png'), require('@/assets/images/ZolaBlue.png')]);
      const [showBg, setShowBg] = useState(true);
-     const { isAuth } = useAppContext();
+     const { isAuth, setAuth, setSocket, setAccount, socket } = useAppContext();
+     const { updateMessage } = useMessageStore();
 
 
-     setTimeout(() => {
-          setShowBg(false);
-          if (isAuth) {
-               router.replace("/(authenticated)/(tabs)")
-          }
-     }, 2000)
+     useEffect(() => {
+          setTimeout(() => {
+
+               if (isAuth) {
+                    router.replace("/(authenticated)/(tabs)")
+               }
+
+               getAccessToken().then(async (token) => {
+                    if (token) {
+                         const { payload } = await userApi.getMe(token);
+                         setAuth(true);
+                         setAccount(payload);
+
+                         if (!socket) {
+                              bootstrap(token, setSocket, updateMessage);
+                         }
+                         router.replace("/(authenticated)/(tabs)")
+                    }
+               });
+
+               setShowBg(false);
+          }, 2000)
+     }, [])
+
 
      return (
           <View className="flex-1 justify-between items-center bg-white">
@@ -82,3 +105,7 @@ const styles = StyleSheet.create({
           backgroundColor: '#55555',
      },
 });
+function setAuth(arg0: boolean) {
+     throw new Error("Function not implemented.");
+}
+

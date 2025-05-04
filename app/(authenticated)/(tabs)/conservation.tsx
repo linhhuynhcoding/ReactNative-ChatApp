@@ -40,7 +40,7 @@ const Page = () => {
                 id={conversation.id}
                 name={conversation?.name}
                 imageUrl={conversation.imageUrl}
-                message={conversation?.lastMessage?.content}
+                message={`${conversation.lastMessage.senderId === account.id ? "Bạn: " : ""}` + conversation?.lastMessage?.content}
                 time={conversation?.lastMessage?.createdAt}
               ></Conversation>
 

@@ -5,5 +5,7 @@ export const useMessage = (conversationId: number) => {
      return useQuery({
           queryKey: ["message"],
           queryFn: () => messageApi.getMessages(conversationId),
+          staleTime: 0,
+          refetchOnMount: true,
      });
 }

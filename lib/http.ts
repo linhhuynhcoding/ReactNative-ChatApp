@@ -1,5 +1,5 @@
 import Config from "react-native-config";
-import { getAccesstoken } from "./utils";
+import { getAccessToken } from "./utils";
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 type CustomOptions = RequestInit & {
@@ -56,7 +56,7 @@ const request = async <Response>(method: HttpMethod, url: string, options?: Cust
      }
 
      if (options?.authorization) {
-          const token = await getAccesstoken();
+          const token = await getAccessToken();
           baseHeaders = {
                ...baseHeaders,
                'Authorization': `Bearer ${token}`,

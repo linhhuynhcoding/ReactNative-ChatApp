@@ -2,8 +2,9 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { StyleSheet } from 'react-native'
 import { Image } from 'expo-image'
+import { messageTime } from '@/lib/utils'
 
-const Message = ({ content, isMine, name }: { content: string, isMine: boolean, name: string }) => {
+const Message = ({ content, isMine, name, time }: { content: string, isMine: boolean, name: string, time: string }) => {
      const avatarUrl = `https://api.dicebear.com/8.x/notionists/svg?seed=${name}`;
 
      return (
@@ -24,9 +25,9 @@ const Message = ({ content, isMine, name }: { content: string, isMine: boolean, 
                     //      : null
                }
                <View style={styles.message} className='flex p-2 bg-white justify-start'>
-                    <Text className={`${isMine ? 'text-right' : 'text-left'}`}>{content ?? Message}</Text>
+                    <Text className={`${'text-left'}`}>{content ?? Message}</Text>
                     <Text className='text-gray-400 text-sm w-fit text-left pr-2'>
-                         12:00
+                         {messageTime(time)}
                     </Text>
                </View>
           </View>
