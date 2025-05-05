@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import { AntDesign, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
-import { Link, router, useRouter } from 'expo-router';
+import { ExternalPathString, Href, Link, RelativePathString, router, useRouter } from 'expo-router';
 
 import {
      Menu,
@@ -20,10 +20,11 @@ interface HeaderProps {
      tittle?: string;
      isSearch?: boolean;
      isChat?: boolean;
-     backgroundColor?: string
+     backgroundColor?: string;
+     backPath?: any;
 }
 
-const Header = ({ path = "", isSearch = false, tittle, isChat = false }: HeaderProps) => {
+const Header = ({ path = "", isSearch = false, tittle, isChat = false, backPath }: HeaderProps) => {
 
      const router = useRouter();
      const { name } = useMessageStore();
@@ -104,7 +105,13 @@ const Header = ({ path = "", isSearch = false, tittle, isChat = false }: HeaderP
                                         </View>
                                    </>
                                    :
-                                   <Pressable onPress={() => router.back()} className='w-[50px] self-stretch justify-center items-center'>
+                                   <Pressable onPress={() => {
+                                        if (backPath) {
+                                             router.replace(backPath);
+                                        } else {
+                                             router.back()
+                                        }
+                                   }} className='w-[50px] self-stretch justify-center items-center'>
                                         <MaterialIcons name="arrow-back" size={24} color="white" />
                                    </Pressable>
                          }

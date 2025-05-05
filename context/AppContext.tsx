@@ -1,7 +1,7 @@
 import { UserResDTOType } from "@/models/shared/shared-user.model";
 import { createContext, useContext, useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useMe } from "@/queries/useMe";
+import { useMe } from "@/queries/useUser";
 import { Socket } from "socket.io-client";
 import { SocketService } from "@/services/socket.service";
 

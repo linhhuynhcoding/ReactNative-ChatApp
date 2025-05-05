@@ -52,7 +52,7 @@ function InitialLayout() {
           }} />
           <Stack.Screen name="(authenticated)/conversation/[id]" options={{
             header: () =>
-              (<Header isChat={true} ></Header>),
+              (<Header isChat={true} backPath='(authenticated)/(tabs)' ></Header>),
           }} />
 
           <Stack.Screen
@@ -62,6 +62,15 @@ function InitialLayout() {
             }}
           >
           </Stack.Screen>
+          
+          <Stack.Screen
+            name="(authenticated)/(profile)/[email]"
+            options={{
+              header: () => <Header></Header>
+            }}
+          >
+          </Stack.Screen>
+
           <Stack.Screen name="+not-found" />
 
         </Stack>

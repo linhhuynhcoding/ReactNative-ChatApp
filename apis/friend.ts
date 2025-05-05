@@ -1,0 +1,12 @@
+import { http } from "@/lib/http";
+import { CreateFriendRequestBodyType } from "@/models/friend.schema";
+
+const FRIEND_REQUEST_ENDPOINT ="/friend-requests"
+
+export const friendApi = {
+     sendRequest: (body: CreateFriendRequestBodyType) => http.post<unknown>(`${FRIEND_REQUEST_ENDPOINT}`, {
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+     }),
+
+} as const;

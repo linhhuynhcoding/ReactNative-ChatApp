@@ -12,6 +12,11 @@ export const UserSchema = z.object({
 
 export const UserResDTO = UserSchema.omit({ password: true });
 
+export const FindProfileResDTO = UserSchema.extend({
+  friendOf: z.unknown().array().optional(),
+  friends: z.unknown().array().optional(),
+});
 
 export type UserType = z.infer<typeof UserSchema>;
 export type UserResDTOType = z.infer<typeof UserResDTO>;
+export type FindProfileResDTOType = z.infer<typeof FindProfileResDTO>;
