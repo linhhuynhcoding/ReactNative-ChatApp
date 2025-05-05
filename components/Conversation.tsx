@@ -29,7 +29,7 @@ const Conversation = ({ id, isActive = false, isSeen = false, isMuted = false, n
                onPress={() => {
                     router.navigate({
                          pathname: `/(authenticated)/conversation/[id]`,
-                         params: { id: id },
+                         params: { id: id, name: name},
                     })
                }}
                activeOpacity={0.6} className='h-[80px] flex-row p-[10px] pl-6 border-b border-gray-200 gap-6'>

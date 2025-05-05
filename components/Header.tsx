@@ -1,5 +1,5 @@
 import { View, Text, StatusBar, TextInput, TouchableOpacity, Pressable } from 'react-native'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import "./../global.css";
 import { LinearGradient } from 'expo-linear-gradient';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
@@ -13,9 +13,23 @@ import {
      MenuOption,
      MenuTrigger,
 } from 'react-native-popup-menu';
+import { useMessageStore } from '@/store/zustand';
 
-const Header = ({ path = "", isSearch = false, tittle }: { path?: string, tittle?: string, isSearch?: boolean }) => {
-     console.log(path);
+interface HeaderProps {
+     path?: string;
+     tittle?: string;
+     isSearch?: boolean;
+     isChat?: boolean;
+}
+
+const Header = ({ path = "", isSearch = false, tittle, isChat = false }: HeaderProps) => {
+     const { name } = useMessageStore();
+
+     const nameRef = useRef<string>(name);
+
+     useEffect(() => {
+          nameRef.current = name;
+     }, [name]);
 
      return (
           <>
@@ -33,7 +47,6 @@ const Header = ({ path = "", isSearch = false, tittle }: { path?: string, tittle
                     <View style={{ height: StatusBar.currentHeight }} className={`bg-black/10`}>
                     </View>
                     <View className='h-[50px] pl-2 pr-2 w-full flex-row justify-between grow items-center'>
-
                          {
                               isSearch ?
                                    <>
@@ -89,9 +102,9 @@ const Header = ({ path = "", isSearch = false, tittle }: { path?: string, tittle
                                    </Pressable>
                          }
                          {
-                              tittle ?
+                              tittle || isChat ?
                                    <Text className='flex-1 justify-center p-2 text-xl text-white'>
-                                        {tittle}
+                                        {isChat ? nameRef.current : tittle}
                                    </Text>
                                    : null
                          }

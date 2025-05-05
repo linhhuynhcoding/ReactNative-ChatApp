@@ -22,7 +22,7 @@ function InitialLayout() {
   // LogBox.ignoreLogs([
   //   'props.pointerEvents is deprecated. Use style.pointerEvents',
   // ]);
-  
+
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -48,11 +48,11 @@ function InitialLayout() {
 
           <Stack.Screen name="(authenticated)/(tabs)" options={{
             header: () =>
-              (<Header isSearch={true} ></Header>)
+              (<Header isSearch={true}></Header>)
           }} />
           <Stack.Screen name="(authenticated)/conversation/[id]" options={{
             header: () =>
-              (<Header></Header>)
+              (<Header isChat={true} ></Header>),
           }} />
           <Stack.Screen name="+not-found" />
         </Stack>

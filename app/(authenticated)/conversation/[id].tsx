@@ -9,7 +9,7 @@ import { useAppContext } from '@/context/AppContext';
 import { useMessageStore } from '@/store/zustand';
 
 const Conversation = () => {
-  const { id } = useLocalSearchParams();
+  const { id, name } = useLocalSearchParams();
   const { account, socket } = useAppContext();
   const { data, isLoading } = useMessage(Number(id));
 
@@ -17,7 +17,7 @@ const Conversation = () => {
   const textInputRef = React.useRef<TextInput>(null);
   const scrollViewRef = React.useRef<ScrollView>(null);
 
-  const { data: messageData, updateMessage, replaceMessage } = useMessageStore();
+  const { data: messageData, changeName, replaceMessage } = useMessageStore();
 
   const messages = useMemo(() => {
     console.log('data', data)
@@ -38,6 +38,11 @@ const Conversation = () => {
     replaceMessage(messages);
 
   }, [messages])
+
+  useEffect(() => {
+    console.log({ id, name });
+    changeName(name as string);
+  }, [])
 
   const handleSendMessage = (message: string) => {
     if (message.trim() === "") return;
