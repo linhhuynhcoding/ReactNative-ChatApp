@@ -6,13 +6,14 @@ import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useAppContext } from '@/context/AppContext';
 import { useRouter } from 'expo-router';
+import { userApi } from '@/apis/user';
 
 const Page = () => {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [showPass, setShowPass] = useState(true)
-  const { setAuth } = useAppContext();
+  const { setAuth, setAccount } = useAppContext();
 
   const useLogin = useLoginMutation();
 
@@ -23,18 +24,24 @@ const Page = () => {
   const handleLogin = async () => {
     try {
       const response = await useLogin.mutateAsync({ email, password: pass });
+      const { accessToken, refreshToken } = response.payload;
+
+      const {payload: account} = await userApi.getMe(accessToken);
 
       console.log(response);
 
-      AsyncStorage.setItem("access_token", response.payload.accessToken);
-      AsyncStorage.setItem("refresh_token", response.payload.refreshToken);
+      AsyncStorage.setItem("access_token", accessToken);
+      AsyncStorage.setItem("refresh_token", refreshToken);
 
       Toast.show({
         type: 'success',
         text1: "Đăng nhập thành công"
       })
-
+      
       setAuth(true);
+      setAccount(account);
+
+      console.log("🚀 ~ handleLogin ~ account:", account)
       router.push("/(authenticated)/(tabs)");
     }
     catch (e) {
@@ -47,7 +54,7 @@ const Page = () => {
   }
 
   return (
-    <View className='flex-1'>
+    <View className='flex-1 bg-white'>
       <Text className='bg-gray-300 p-3 pl-4'>
         Vui lòng nhập số email và mật khẩu để đăng nhập
       </Text>

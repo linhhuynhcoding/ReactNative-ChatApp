@@ -4,7 +4,7 @@ import { FontAwesome5 } from '@expo/vector-icons'
 import { useRegisterMutation } from '@/queries/useAuth';
 import Toast from 'react-native-toast-message';
 import { useRouter } from 'expo-router';
-import { storage } from '@/store/mmkv-storage';
+// import { storage } from '@/store/mmkv-storage';
 
 const Page = () => {
   const router = useRouter();
@@ -42,7 +42,7 @@ const Page = () => {
   }
 
   return (
-    <View className='flex-1'>
+    <View className='flex-1 bg-white'>
       <Text className='bg-gray-300 p-3 pl-4'>
         Vui lòng nhập số email và mật khẩu để đăng nhập
       </Text>

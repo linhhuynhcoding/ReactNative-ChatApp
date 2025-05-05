@@ -1,8 +1,10 @@
 import Config from "react-native-config";
+import { getAccessToken } from "./utils";
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 type CustomOptions = RequestInit & {
      baseUrl?: string;
+     authorization?: boolean;
 }
 
 const ENTITY_ERROR_STATUS = 422;
@@ -46,9 +48,19 @@ const request = async <Response>(method: HttpMethod, url: string, options?: Cust
      console.log("🚀 ~ options:", options)
 
      const body = options?.body;
-     const baseHeaders = {
+     let baseHeaders: {
+          [key: string]: string;
+     } = {
           'Accept': 'application/json',
           // 'Content-Type': 'application/json',
+     }
+
+     if (options?.authorization) {
+          const token = await getAccessToken();
+          baseHeaders = {
+               ...baseHeaders,
+               'Authorization': `Bearer ${token}`,
+          }
      }
 
      const baseUrl = options?.baseUrl ?? process.env.EXPO_PUBLIC_SERVER_URL;

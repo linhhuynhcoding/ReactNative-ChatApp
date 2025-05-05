@@ -44,7 +44,7 @@ export default function TabLayout() {
         }}
       /> */}
       <Tabs.Screen
-        name="message"
+        name="conservation"
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
           title: 'Tin nhắn',

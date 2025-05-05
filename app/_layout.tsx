@@ -9,7 +9,7 @@ import "@/global.css";
 import Toast from 'react-native-toast-message';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { View } from 'react-native';
+import { LogBox, View } from 'react-native';
 import Header from '@/components/Header';
 import { QueryProvider } from '@/components/query-provider';
 import { AppProvider } from '@/context/AppContext';
@@ -19,6 +19,10 @@ import { MenuProvider } from 'react-native-popup-menu';
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 function InitialLayout() {
+  // LogBox.ignoreLogs([
+  //   'props.pointerEvents is deprecated. Use style.pointerEvents',
+  // ]);
+  
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -45,6 +49,10 @@ function InitialLayout() {
           <Stack.Screen name="(authenticated)/(tabs)" options={{
             header: () =>
               (<Header isSearch={true} ></Header>)
+          }} />
+          <Stack.Screen name="(authenticated)/conversation/[id]" options={{
+            header: () =>
+              (<Header></Header>)
           }} />
           <Stack.Screen name="+not-found" />
         </Stack>
