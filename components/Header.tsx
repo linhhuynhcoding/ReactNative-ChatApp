@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import { AntDesign, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
-import { Link, router } from 'expo-router';
+import { Link, router, useRouter } from 'expo-router';
 
 import {
      Menu,
@@ -20,9 +20,12 @@ interface HeaderProps {
      tittle?: string;
      isSearch?: boolean;
      isChat?: boolean;
+     backgroundColor?: string
 }
 
 const Header = ({ path = "", isSearch = false, tittle, isChat = false }: HeaderProps) => {
+
+     const router = useRouter();
      const { name } = useMessageStore();
 
      const nameRef = useRef<string>(name);
@@ -79,13 +82,17 @@ const Header = ({ path = "", isSearch = false, tittle, isChat = false }: HeaderP
                                                                  padding: 2
                                                             }
                                                        }}>
-                                                            <MenuOption onSelect={() => alert(`Save`)} >
+                                                            <MenuOption onSelect={() => {
+                                                                 router.navigate("/(authenticated)/(menu)/addfriend")
+                                                            }} >
                                                                  <View className='flex flex-row pl-2 gap-4 items-center'>
                                                                       <AntDesign className='' name="adduser" size={24} color="black" />
                                                                       <Text style={{ padding: 2 }}>Thêm bạn</Text>
                                                                  </View>
                                                             </MenuOption>
-                                                            <MenuOption onSelect={() => alert(`Delete`)} >
+                                                            <MenuOption onSelect={() => {
+                                                                 router.navigate("/(authenticated)/(menu)/addgroup")
+                                                            }} >
                                                                  <View className='flex flex-row pl-2 gap-4 items-center'>
                                                                       <AntDesign name="addusergroup" size={24} color="black" />
                                                                       <Text style={{}}>Tạo nhóm</Text>

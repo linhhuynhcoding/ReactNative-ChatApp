@@ -54,7 +54,16 @@ function InitialLayout() {
             header: () =>
               (<Header isChat={true} ></Header>),
           }} />
+
+          <Stack.Screen
+            name="(authenticated)/(menu)/addfriend"
+            options={{
+              header: () => <Header tittle='Thêm bạn'></Header>
+            }}
+          >
+          </Stack.Screen>
           <Stack.Screen name="+not-found" />
+
         </Stack>
         <StatusBar style="auto" />
       </ThemeProvider>

@@ -7,7 +7,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Ionicons, Octicons } from '@expo/vector-icons';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -44,7 +44,7 @@ export default function TabLayout() {
         }}
       /> */}
       <Tabs.Screen
-        name="conservation"
+        name="index"
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
           title: 'Tin nhắn',
@@ -65,7 +65,8 @@ export default function TabLayout() {
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
           title: 'Cá nhân',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          tabBarIcon: ({ color }) => <Octicons name="person" size={28} color={color} />
+          ,
         }}
       />
     </Tabs>
