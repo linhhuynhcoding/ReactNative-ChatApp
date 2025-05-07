@@ -2,8 +2,8 @@ import { TouchableOpacity, View, Text } from "react-native";
 import { Image } from "expo-image";
 import { StyleSheet } from 'react-native'
 import { useAssets } from 'expo-asset';
-import { Link, useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { Link, useNavigation, useRouter } from "expo-router";
+import { useEffect, useRef, useState } from "react";
 import { useAppContext } from "@/context/AppContext";
 import { getAccessToken } from "@/lib/utils";
 import { useMessageStore } from "@/store/zustand";
@@ -15,18 +15,29 @@ export default function Page() {
      const [assets] = useAssets([require('@/assets/images/bg.png'), require('@/assets/images/ZolaBlue.png')]);
      const [showBg, setShowBg] = useState(true);
      const { isAuth, setAuth, setSocket, setAccount, socket } = useAppContext();
+     const authRef = useRef(isAuth);
      const { updateMessage } = useMessageStore();
 
+     useEffect(() => {
+          authRef.current = isAuth
+     }, [isAuth]);
 
      useEffect(() => {
+          console.log("fire");
+          
           setTimeout(() => {
 
-               if (isAuth) {
-                    router.replace("/(authenticated)/(tabs)")
+               if (authRef.current) {
+                    console.log("natigating... conversation")
+                    // router.replace("/(authenticated)/(tabs)")
+
+                    return;
                }
 
                getAccessToken().then(async (token) => {
-                    if (token) {
+                    console.log("🚀 ~ getAccessToken ~ token:", token)
+                    
+                    if (token !== "" && token) {
                          const { payload } = await userApi.getMe(token);
                          setAuth(true);
                          setAccount(payload);
@@ -34,7 +45,7 @@ export default function Page() {
                          if (!socket) {
                               bootstrap(token, setSocket, updateMessage);
                          }
-                         router.replace("/(authenticated)/(tabs)")
+                         // router.replace("/(authenticated)/(tabs)")
                     }
                });
 
@@ -105,7 +116,3 @@ const styles = StyleSheet.create({
           backgroundColor: '#55555',
      },
 });
-function setAuth(arg0: boolean) {
-     throw new Error("Function not implemented.");
-}
-

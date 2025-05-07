@@ -16,6 +16,11 @@ import { AppProvider } from '@/context/AppContext';
 import { UserInactivityProvider } from '@/context/UserInactivity';
 import { MenuProvider } from 'react-native-popup-menu';
 
+export const unstable_settings = {
+  // Ensure any route can link back to `/`
+  initialRouteName: 'initial-route',
+};
+
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 function InitialLayout() {
@@ -42,14 +47,16 @@ function InitialLayout() {
     <>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="initial-route" options={{ headerShown: false }} />
           <Stack.Screen name="login" options={{ header: () => (<Header tittle='Đăng nhập'></Header>) }} />
           <Stack.Screen name="register" options={{ header: () => (<Header tittle='Đăng ký tài khoản'></Header>) }} />
 
-          <Stack.Screen name="(authenticated)/(tabs)" options={{
-            header: () =>
-              (<Header isSearch={true}></Header>)
+          <Stack.Screen name="(authenticated)" options={{
+            // header: () =>
+            //   (<Header isSearch={true}></Header>),
+            headerShown: false
           }} />
+
           <Stack.Screen name="(authenticated)/conversation/[id]" options={{
             header: () =>
               (<Header isChat={true} backPath='(authenticated)/(tabs)' ></Header>),
@@ -62,7 +69,7 @@ function InitialLayout() {
             }}
           >
           </Stack.Screen>
-          
+
           <Stack.Screen
             name="(authenticated)/(profile)/[email]"
             options={{
@@ -93,10 +100,7 @@ const RootLayoutNav = () => {
         </QueryProvider>
       </UserInactivityProvider>
     </AppProvider>
-
-
   )
-
 }
 
 export default RootLayoutNav;

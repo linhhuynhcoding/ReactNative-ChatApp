@@ -31,8 +31,6 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
      const [account, setAccount] = useState<UserResDTOType>({} as UserResDTOType);
      const [socket, setSocket] = useState<SocketService | null>(null);
 
-     
-
      return (
           <AppContext.Provider value={{ 
                isAuth: isAuth, setAuth: (value: boolean) => setAuth(value), 

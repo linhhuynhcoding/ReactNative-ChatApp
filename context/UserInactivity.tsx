@@ -54,6 +54,7 @@ export const UserInactivityProvider = ({ children }: any) => {
                     router.replace('/(authenticated)/(tabs)');
                }
                else if (isAuthRef.current) {
+                    console.log("navigating...")
                     router.replace('/(authenticated)/(tabs)');
                }
                else {

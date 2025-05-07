@@ -8,6 +8,7 @@ import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { AntDesign, Ionicons, Octicons } from '@expo/vector-icons';
+import Header from '@/components/Header';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -49,6 +50,8 @@ export default function TabLayout() {
           tabBarLabelStyle: styles.tabBarLabelStyle,
           title: 'Tin nhắn',
           tabBarIcon: ({ color }) => (<AntDesign name="message1" size={28} color={color} />),
+          headerShown: true,
+          header: () => (<Header isSearch={true}></Header>),
         }}
       />
       <Tabs.Screen
@@ -58,6 +61,8 @@ export default function TabLayout() {
           tabBarStyle: styles.tabBarStyle,
           title: 'Danh bạ',
           tabBarIcon: ({ color }) => (<AntDesign name="contacts" size={28} color={color} />),
+          headerShown: true,
+          header: () => (<Header isSearch={true}></Header>),
         }}
       />
       <Tabs.Screen
@@ -65,8 +70,9 @@ export default function TabLayout() {
         options={{
           tabBarLabelStyle: styles.tabBarLabelStyle,
           title: 'Cá nhân',
-          tabBarIcon: ({ color }) => <Octicons name="person" size={28} color={color} />
-          ,
+          tabBarIcon: ({ color }) => <Octicons name="person" size={28} color={color} />,
+          headerShown: true,
+          header: () => (<Header isSearch={false} isBack={false} setting={true}></Header>),
         }}
       />
     </Tabs>

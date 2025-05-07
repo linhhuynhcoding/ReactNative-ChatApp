@@ -6,7 +6,7 @@ export const getAccessToken = async () => {
           if (token) {
                return token
           } else {
-               throw new Error("Token not found")
+               console.log("🚀 ~ getAccessToken ~ token: NOT FOUND", token)
           }
      } catch (error) {
           console.error("Error retrieving token:", error)

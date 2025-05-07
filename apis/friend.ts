@@ -7,6 +7,7 @@ export const friendApi = {
      sendRequest: (body: CreateFriendRequestBodyType) => http.post<unknown>(`${FRIEND_REQUEST_ENDPOINT}`, {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
+          authorization: true
      }),
 
 } as const;

@@ -4,10 +4,12 @@ import Conversation from '@/components/Conversation'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useConversation } from '@/queries/useConversation'
 import { useAppContext } from '@/context/AppContext'
-import { Link } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
 
 const Page = () => {
-  const { account } = useAppContext();
+  const router = useRouter();
+
+  const { account, isAuth } = useAppContext();
   const [token, setToken] = React.useState<string>("");
 
   const { data } = useConversation();
@@ -27,6 +29,12 @@ const Page = () => {
 
     return result;
   }, [data]);
+
+  // useEffect(() => {
+  //   if (!isAuth) {
+  //     router.replace("/");
+  //   }
+  // }, [])
 
   return (
     <View className='bg-white flex-1 '>
