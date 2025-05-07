@@ -58,7 +58,7 @@ export const UserInactivityProvider = ({ children }: any) => {
                     router.replace('/(authenticated)/(tabs)');
                }
                else {
-                    router.replace('/');
+                    router.replace('/initial-route');
                }
           }
 

@@ -23,9 +23,12 @@ const Page = () => {
       }
 
       return item;
+    }).sort((a: any, b: any) => {
+      console.log(a?.lastMessage?.createdAt, b?.lastMessage?.createdAt)
+      return (a?.lastMessage?.createdAt < b?.lastMessage?.createdAt ? 1 : -1)
     });
 
-    console.log("conversations", result);
+    // console.log("conversations", result);
 
     return result;
   }, [data]);
@@ -48,7 +51,7 @@ const Page = () => {
                 id={conversation.id}
                 name={conversation?.name}
                 imageUrl={conversation.imageUrl}
-                message={`${conversation.lastMessage.senderId === account.id ? "Bạn: " : ""}` + conversation?.lastMessage?.content}
+                message={`${conversation.lastMessage?.senderId === account.id ? "Bạn: " : ""}` + (conversation?.lastMessage?.content ?? '')}
                 time={conversation?.lastMessage?.createdAt}
               ></Conversation>
 

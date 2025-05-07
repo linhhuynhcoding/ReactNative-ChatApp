@@ -10,7 +10,8 @@ export const useMe = (token: string) => {
 
 export const useGetProfile = (email: string) => {
      return useQuery({
-          queryKey: ["getProfile"],
-          queryFn: () => userApi.findFriend(email)
+          queryKey: ["getProfile", email],
+          queryFn: () => userApi.findFriend(email),
+          staleTime: 0
      })
 }

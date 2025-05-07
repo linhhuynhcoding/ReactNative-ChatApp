@@ -27,9 +27,9 @@ export default function Page() {
           
           setTimeout(() => {
 
-               if (authRef.current) {
+               if (authRef.current && socket) {
                     console.log("natigating... conversation")
-                    // router.replace("/(authenticated)/(tabs)")
+                    router.replace("/(authenticated)/(tabs)")
 
                     return;
                }
@@ -45,7 +45,7 @@ export default function Page() {
                          if (!socket) {
                               bootstrap(token, setSocket, updateMessage);
                          }
-                         // router.replace("/(authenticated)/(tabs)")
+                         router.replace("/(authenticated)/(tabs)")
                     }
                });
 

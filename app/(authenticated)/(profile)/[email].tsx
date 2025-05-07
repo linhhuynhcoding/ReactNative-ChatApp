@@ -21,9 +21,12 @@ const Profile = () => {
      const isFriend = useMemo(() => {
           const payload = data?.payload;
 
-          if (data?.payload?.friendRequestsReceived?.length > 0) {
+          if (data?.payload?.friendRequestsReceived?.length > 0 
+               && data?.payload?.friendRequestsReceived?.[0]?.status === 'pending') {
                setSentRequest(true);
           }
+
+          console.log(payload)
 
           if (payload?.friendOf?.length > 0 || payload?.friends?.length > 0) {
                return true;

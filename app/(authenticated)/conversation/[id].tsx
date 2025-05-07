@@ -71,7 +71,7 @@ const Conversation = () => {
           {
             messageData?.map((message: any, index: number) => {
               return (
-                <Message time={message.createdAt} name={message?.sender?.name} key={index} content={message?.content} isMine={account.id === message.senderId} ></Message>
+                <Message time={message.createdAt} name={message?.sender?.name} key={index} content={message?.content} isMine={account.id === message?.senderId} ></Message>
               )
             })
           }

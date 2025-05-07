@@ -17,7 +17,7 @@ const Addfriend = () => {
     try {
       const response = await userApi.findFriend(mail);
 
-      router.navigate({
+      router.push({
         pathname: "/(authenticated)/(profile)/[email]",
         params: {
           email: mail,

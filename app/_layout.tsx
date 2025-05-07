@@ -57,27 +57,6 @@ function InitialLayout() {
             headerShown: false
           }} />
 
-          <Stack.Screen name="(authenticated)/conversation/[id]" options={{
-            header: () =>
-              (<Header isChat={true} backPath='(authenticated)/(tabs)' ></Header>),
-          }} />
-
-          <Stack.Screen
-            name="(authenticated)/(menu)/addfriend"
-            options={{
-              header: () => <Header tittle='Thêm bạn'></Header>
-            }}
-          >
-          </Stack.Screen>
-
-          <Stack.Screen
-            name="(authenticated)/(profile)/[email]"
-            options={{
-              header: () => <Header></Header>
-            }}
-          >
-          </Stack.Screen>
-
           <Stack.Screen name="+not-found" />
 
         </Stack>
