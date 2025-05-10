@@ -42,7 +42,7 @@ const Page = () => {
       setAccount(account);
 
       console.log("🚀 ~ handleLogin ~ account:", account)
-      router.replace("/(authenticated)/(tabs)");
+      router.replace("/initial-route");
     }
     catch (e) {
       console.log(e);

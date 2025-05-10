@@ -4,16 +4,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useNavigation, useRouter } from 'expo-router'
 import { useAppContext } from '@/context/AppContext'
 import { StackActions } from '@react-navigation/native'
+import { Socket } from 'socket.io-client'
 
 const SettingPage = () => {
   const router = useRouter();
-  const {setSocket, setAccount, setAuth} = useAppContext();
+  const {socket, setSocket, setAccount, setAuth} = useAppContext();
      const navigation = useNavigation();
 
   const handleLogout = async () => {
     try {
       await AsyncStorage.setItem("access_token", "");
 
+      socket?.disconnectServer();
       setSocket(null);
       setAuth(false);
 

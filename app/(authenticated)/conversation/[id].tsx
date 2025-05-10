@@ -7,11 +7,13 @@ import { useMessage } from '@/queries/useMessage';
 import Message from '@/components/Message';
 import { useAppContext } from '@/context/AppContext';
 import { useMessageStore } from '@/store/zustand';
+import { useConversation } from '@/queries/useConversation';
 
 const Conversation = () => {
   const { id, name } = useLocalSearchParams();
   const { account, socket } = useAppContext();
   const { data, isLoading } = useMessage(Number(id));
+  const { data: conversationRes, isLoading: conversationLoading } = useConversation(Number(id));
 
   const [message, setMessage] = React.useState<string>("");
   const textInputRef = React.useRef<TextInput>(null);
@@ -33,6 +35,8 @@ const Conversation = () => {
 
   }, [data]);
 
+  const conversation = useMemo(() => conversationRes?.payload, [conversationRes]);
+
   useEffect(() => {
     console.log("messageData", messages);
     replaceMessage(messages);
@@ -45,12 +49,16 @@ const Conversation = () => {
   }, [])
 
   const handleSendMessage = (message: string) => {
-    if (message.trim() === "") return;
+    console.log(message);
+    if (message.trim() === "") {
+      console.log("Tin nhắn trống");
+      return
+    };
 
     socket?.sendMessage({
       content: message,
-      roomId: Number(id),
-      roomType: "conversation",
+      roomId: conversation.isGroup ? Number(conversation?.id) : Number(conversation?.id),
+      roomType: conversation.isGroup ? "group" : "conversation",
     });
 
     textInputRef.current?.clear();

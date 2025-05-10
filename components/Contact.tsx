@@ -1,13 +1,25 @@
 import { View, Text, TouchableOpacity, Pressable } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { Image } from 'expo-image'
 import { StyleSheet } from 'react-native'
 import { useRouter } from 'expo-router'
 import { useResponseFriendRequestMutation } from '@/queries/useFriend'
+import Checkbox from 'expo-checkbox';
 
-const Contact = ({ id, name, imageUrl, isRequest = false, requestId }: { id: number, name: string, imageUrl?: string, isRequest?: boolean, requestId?: number }) => {
+interface ContactProps {
+     id: number;
+     name: string;
+     imageUrl?: string;
+     isRequest?: boolean;
+     requestId?: number;
+     isSelect?: boolean;
+     onCheck?: ({ userId, status }: { userId: number, status: "check" | "uncheck" }) => void;
+}
+
+const Contact = ({ id, name, isSelect = false, imageUrl, isRequest = false, requestId, onCheck = ({ userId, status }: { userId: number, status: "check" | "uncheck" }) => {} }: ContactProps) => {
      const router = useRouter();
      const useResponseRequest = useResponseFriendRequestMutation();
+     const [isChecked, setChecked] = useState(false);
 
      const avatarUrl = `https://api.dicebear.com/8.x/notionists/svg?seed=${name}`;
 
@@ -30,7 +42,7 @@ const Contact = ({ id, name, imageUrl, isRequest = false, requestId }: { id: num
 
           <TouchableOpacity
                onPress={() => {
-                    if (isRequest) return;
+                    if (isRequest || isSelect) return;
                     router.navigate({
                          pathname: `/(authenticated)/conversation/[id]`,
                          params: { id: id, name: name },
@@ -62,6 +74,33 @@ const Contact = ({ id, name, imageUrl, isRequest = false, requestId }: { id: num
                               <Pressable onPress={() => handleResponseRequest("rejected")} style={{ backgroundColor: "#FF5E79", padding: 6, borderRadius: 6, }}>
                                    <Text className='font-thin ' style={{ color: "white" }}>Từ chối</Text>
                               </Pressable>
+                         </View>
+                    }
+                    {
+                         isSelect &&
+                         <View className='pr-4'>
+                              <Checkbox
+                                   style={{
+                                        borderRadius: "50%",
+                                        borderWidth: 1,
+                                   }}
+
+                                   value={isChecked} onValueChange={(value) => {
+                                        setChecked(value);
+
+                                        if (value) {
+                                             onCheck({
+                                                  userId: id,
+                                                  status: "check",
+                                             })
+                                        } else {
+                                             onCheck({
+                                                  userId: id,
+                                                  status: "uncheck",
+                                             })
+                                        }
+                                   }}></Checkbox>
+
                          </View>
                     }
                </View>

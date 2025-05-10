@@ -31,6 +31,16 @@ const AuthLayout = () => {
                </Stack.Screen>
 
                <Stack.Screen
+                    name="(menu)/addgroup"
+                    options={{
+                         header: () => <Header tittle='Tạo group'></Header>,
+                         headerShown: true
+                    }}
+               >
+               </Stack.Screen>
+
+
+               <Stack.Screen
                     name="(profile)/[email]"
                     options={{
                          header: () => <Header></Header>,

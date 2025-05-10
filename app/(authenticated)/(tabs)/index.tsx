@@ -2,7 +2,7 @@ import { View, Text, ScrollView } from 'react-native'
 import React, { useEffect, useMemo } from 'react'
 import Conversation from '@/components/Conversation'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useConversation } from '@/queries/useConversation'
+import { useConversations } from '@/queries/useConversation'
 import { useAppContext } from '@/context/AppContext'
 import { Link, useRouter } from 'expo-router'
 
@@ -12,7 +12,7 @@ const Page = () => {
   const { account, isAuth } = useAppContext();
   const [token, setToken] = React.useState<string>("");
 
-  const { data } = useConversation();
+  const { data } = useConversations();
   const conversations = useMemo(() => {
     let result = data?.payload ?? [];
 

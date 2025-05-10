@@ -14,8 +14,6 @@ export class SocketService {
                     Authorization: `Bearer ${token}`,
                }
           });
-
-
      }
 
      async getToken() {
@@ -30,6 +28,7 @@ export class SocketService {
           this.connectServer();
           // this.disconnectServer();
           this.newMessage(updateMessage);
+          this.handleError();
      }
 
      public connectServer(): void {
@@ -57,13 +56,20 @@ export class SocketService {
                callback?.(message);
           });
      }
+
+     public handleError() {
+          this.socket.on("error", (message) => { 
+               console.log(message);
+               alert("Đã có lỗi xảy ra!")
+          })
+     }
 }
 
 export const bootstrap = (
-     token: string, 
+     token: string,
      setSocket: (value: SocketService | null) => void,
      updateMessage: (message: MessagePacket) => void
-) => { 
+) => {
      const socket = new SocketService(token);
      socket.bootstrap(updateMessage);
      setSocket(socket);
