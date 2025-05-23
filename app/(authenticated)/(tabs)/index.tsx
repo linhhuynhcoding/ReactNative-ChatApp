@@ -5,74 +5,46 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useConversations } from '@/queries/useConversation'
 import { useAppContext } from '@/context/AppContext'
 import { Link, useRouter } from 'expo-router'
+import { useConversationStore } from '@/store/zustand'
+import Loading from '@/components/ActivityIndicator'
+import { ConversationResType } from '@/models/conversation.schemas'
 
 const Page = () => {
+
   const router = useRouter();
-
   const { account, isAuth } = useAppContext();
-  const [token, setToken] = React.useState<string>("");
+  const { data, isLoading } = useConversations();
+  const { data: conversations, sort, updateConversations } = useConversationStore();
 
-  const { data } = useConversations();
-  const conversations = useMemo(() => {
-    let result = data?.payload ?? [];
+  useEffect(() => {
 
-    result = result?.map((item: any) => {
-      if (!item.isGroup && item) {
-        item.participants = item.participants?.filter((participant: any) => participant.userId !== account.id);
-        item.name = item.participants?.[0]?.user?.name;
-      }
+    if (!data) return;
+    const { payload } = data!;
 
-      return item;
-    }).sort((a: any, b: any) => {
-      console.log(a?.lastMessage?.createdAt, b?.lastMessage?.createdAt)
-      return (a?.lastMessage?.createdAt < b?.lastMessage?.createdAt ? 1 : -1)
-    });
-
-    // console.log("conversations", result);
-
-    return result;
-  }, [data]);
-
-  // useEffect(() => {
-  //   if (!isAuth) {
-  //     router.replace("/");
-  //   }
-  // }, [])
+    updateConversations(payload);
+    sort();
+  }, [data])
 
   return (
     <View className='bg-white flex-1 '>
       <ScrollView>
         {
-          conversations.map((conversation: any) => {
+          !isLoading ?
+          conversations.map((conversation: ConversationResType) => {
             return (
-
               <Conversation
                 key={conversation.id}
                 id={conversation.id}
-                name={conversation?.name}
-                imageUrl={conversation.imageUrl}
+                name={conversation?.name ?? ""}
+                imageUrl={""}
                 message={`${conversation.lastMessage?.senderId === account.id ? "Bạn: " : ""}` + (conversation?.lastMessage?.content ?? '')}
-                time={conversation?.lastMessage?.createdAt}
+                time={conversation?.lastMessage?.createdAt ?? conversation?.createdAt}
+                isGroup={conversation.isGroup}
               ></Conversation>
-
             )
-          })
+          }) :
+          <Loading></Loading>
         }
-
-        {/* <Message isSeen={true}></Message>
-        <Message isSeen={true}></Message>
-        <Message isSeen={true}></Message>
-        <Message isMuted={true}></Message>
-        <Message isSeen={true} isMuted={true}></Message>
-        <Message></Message>
-        <Message></Message>
-        <Message></Message>
-        <Message></Message>
-        <Message></Message>
-        <Message></Message>
-        <Message></Message>
-        <Message></Message>
-        <Message></Message> */}
       </ScrollView>
     </View>
   )

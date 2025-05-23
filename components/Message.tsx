@@ -4,33 +4,39 @@ import { StyleSheet } from 'react-native'
 import { Image } from 'expo-image'
 import { messageTime } from '@/lib/utils'
 
-const Message = ({ content, isMine, name, time }: { content: string, isMine: boolean, name: string, time: string }) => {
+interface MessageProp {
+     content: string,
+     isMine: boolean,
+     name: string,
+     time: string,
+     showTime?: boolean,
+     showName?: boolean,
+}
+
+const Message = ({ content, isMine, name, time, showTime = true, showName = false }: MessageProp) => {
      const avatarUrl = `https://api.dicebear.com/8.x/notionists/svg?seed=${name}`;
 
      return (
-
-          <View className={`flex flex-row ${isMine ? "justify-end" : "justify-start"} shadow-md items-center `}>
+          <View style={styles.message} className={`flex flex-col m-0 p-2 bg-white ${isMine ? "justify-end" : "justify-start"}`}>
                {
-                    // !isMine ?
-                    //      <View style={styles.imageContainer} className=''>
-                    //           <Image
-                    //                style={styles.image}
-
-                    //                source={avatarUrl}
-                    //                // source="https://picsum.photos/seed/696/3000/2000"
-                    //                contentFit="cover"
-                    //                transition={1000}
-                    //           />
-                    //      </View>
-                    //      : null
+                    (!isMine && showName) &&
+                    <Text style={{
+                         fontSize: 10,
+                         color: "#CF1F48"
+                    }} >{name}</Text>
                }
-               <View style={styles.message} className='flex p-2 bg-white justify-start'>
-                    <Text className={`${'text-left'}`}>{content ?? Message}</Text>
+               <Text className={`${'text-left'}`}>{content ?? Message}</Text>
+               {
+                    showTime &&
                     <Text className='text-gray-400 text-sm w-fit text-left pr-2'>
                          {messageTime(time)}
                     </Text>
-               </View>
+               }
           </View>
+          // <View className={`flex flex-row ${isMine ? "justify-end" : "justify-start"} shadow-md items-center `}>
+
+
+          // </View>
      )
 }
 
@@ -39,7 +45,8 @@ const styles = StyleSheet.create({
           borderRadius: 10,
           minWidth: 100,
           maxWidth: '80%',
-          margin: 5,
+          marginLeft: 5,
+          marginRight: 5,
      },
      image: {
           flex: 1,

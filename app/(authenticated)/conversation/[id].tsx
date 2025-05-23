@@ -1,4 +1,4 @@
-import { View, Text, TextInput, ScrollView, Pressable } from 'react-native'
+import { View, Text, TextInput, ScrollView, Pressable, ActivityIndicator } from 'react-native'
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useLocalSearchParams } from 'expo-router';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
@@ -6,9 +6,12 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { useMessage } from '@/queries/useMessage';
 import Message from '@/components/Message';
 import { useAppContext } from '@/context/AppContext';
-import { useMessageStore } from '@/store/zustand';
+import { useConversationStore, useMessageStore } from '@/store/zustand';
 import { useConversation } from '@/queries/useConversation';
+import { toBlockMessages } from '@/lib/utils';
+import BlockMessage from '@/components/BlockMessage';
 
+// TODO: refactor state
 const Conversation = () => {
   const { id, name } = useLocalSearchParams();
   const { account, socket } = useAppContext();
@@ -16,10 +19,12 @@ const Conversation = () => {
   const { data: conversationRes, isLoading: conversationLoading } = useConversation(Number(id));
 
   const [message, setMessage] = React.useState<string>("");
+
   const textInputRef = React.useRef<TextInput>(null);
   const scrollViewRef = React.useRef<ScrollView>(null);
 
-  const { data: messageData, changeName, replaceMessage } = useMessageStore();
+  const { data: messageData, changeName, setMessage: replaceMessage, changeConversation } = useMessageStore();
+  const { setCurrentConver } = useConversationStore();
 
   const messages = useMemo(() => {
     console.log('data', data)
@@ -35,7 +40,10 @@ const Conversation = () => {
 
   }, [data]);
 
-  const conversation = useMemo(() => conversationRes?.payload, [conversationRes]);
+  const conversation = useMemo(() => {
+    setCurrentConver(conversationRes?.payload);
+    return conversationRes?.payload
+  }, [conversationRes]);
 
   useEffect(() => {
     console.log("messageData", messages);
@@ -46,6 +54,7 @@ const Conversation = () => {
   useEffect(() => {
     console.log({ id, name });
     changeName(name as string);
+    changeConversation(Number(id));
   }, [])
 
   const handleSendMessage = (message: string) => {
@@ -67,7 +76,6 @@ const Conversation = () => {
 
   return (
     <View className='bg-blue-50 flex flex-col flex-1 justify-start items-center'>
-      {/* <Text>Conversation {id}</Text> */}
       <View className='flex-1 w-full'>
         <ScrollView ref={scrollViewRef}
           onLayout={(event) => {
@@ -77,11 +85,16 @@ const Conversation = () => {
             scrollViewRef.current?.scrollToEnd({ animated: true });
           }} className='flex gap-1'>
           {
-            messageData?.map((message: any, index: number) => {
-              return (
-                <Message time={message.createdAt} name={message?.sender?.name} key={index} content={message?.content} isMine={account.id === message?.senderId} ></Message>
-              )
-            })
+            isLoading ?
+              <ActivityIndicator />
+              :
+              toBlockMessages(messageData).map((data, index) => {
+                return (
+                  <BlockMessage key={index} data={data} isMine={account.id === data?.senderId}>
+
+                  </BlockMessage>
+                )
+              })
           }
         </ScrollView>
       </View>

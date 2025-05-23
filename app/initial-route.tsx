@@ -6,7 +6,7 @@ import { Link, useNavigation, useRouter } from "expo-router";
 import { useEffect, useRef, useState } from "react";
 import { useAppContext } from "@/context/AppContext";
 import { getAccessToken } from "@/lib/utils";
-import { useMessageStore } from "@/store/zustand";
+import { useMessageStore, useUserInfoStore } from "@/store/zustand";
 import { bootstrap } from "@/services/socket.service";
 import { userApi } from "@/apis/user";
 
@@ -17,6 +17,7 @@ export default function Page() {
      const { isAuth, setAuth, setSocket, setAccount, socket } = useAppContext();
      const authRef = useRef(isAuth);
      const { updateMessage } = useMessageStore();
+     const { setUserId } = useUserInfoStore();
 
      useEffect(() => {
           authRef.current = isAuth
@@ -24,7 +25,7 @@ export default function Page() {
 
      useEffect(() => {
           console.log("fire");
-          
+
           setTimeout(() => {
 
                if (authRef.current && socket) {
@@ -36,11 +37,12 @@ export default function Page() {
 
                getAccessToken().then(async (token) => {
                     console.log("🚀 ~ getAccessToken ~ token:", token)
-                    
+
                     if (token !== "" && token) {
                          const { payload } = await userApi.getMe(token);
                          setAuth(true);
                          setAccount(payload);
+                         setUserId(payload?.id);
 
                          if (!socket) {
                               bootstrap(token, setSocket, updateMessage);

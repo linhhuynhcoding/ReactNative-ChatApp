@@ -15,6 +15,9 @@ export const useResponseFriendRequestMutation = () => {
           onSuccess: () => {
                queryClient.invalidateQueries({
                     queryKey: ["get-friends"]
+               }),
+               queryClient.invalidateQueries({
+                    queryKey: ["conversations"]
                })
           }
      });

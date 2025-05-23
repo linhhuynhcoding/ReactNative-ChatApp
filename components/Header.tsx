@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from 'react'
 import "./../global.css";
 import { LinearGradient } from 'expo-linear-gradient';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
-import { AntDesign, FontAwesome6, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { AntDesign, Feather, FontAwesome6, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
 import { ExternalPathString, Href, Link, RelativePathString, router, useRouter } from 'expo-router';
 
@@ -110,11 +110,12 @@ const Header = ({ path = "", isSearch = false, tittle, isChat = false, backPath,
                          {
                               (isBack && !isSearch) &&
                               <Pressable onPress={() => {
-                                   if (backPath) {
-                                        router.replace(backPath);
-                                   } else {
-                                        router.back()
-                                   }
+                                   // if (backPath) {
+                                   //      router.replace(backPath);
+                                   // } else {
+                                   //      router.back()
+                                   // }
+                                   router.back()
                               }} className='w-[50px] self-stretch justify-center items-center'>
                                    <MaterialIcons name="arrow-back" size={24} color="white" />
                               </Pressable>
@@ -138,7 +139,20 @@ const Header = ({ path = "", isSearch = false, tittle, isChat = false, backPath,
                                         <FontAwesome6 name="gear" size={20} color="white" />
                                    </Pressable>
                               </>
-
+                         }
+                         {/* Options */}
+                         {
+                              isChat &&
+                              <>
+                                   <View className='flex-1'></View>
+                                   <Pressable 
+                                   onPress={() => {
+                                        router.push("/(authenticated)/conversation/options")
+                                   }}
+                                   className='flex justify-center p-2'>
+                                        <Feather name="menu" size={24} color="white" />
+                                   </Pressable>
+                              </>
                          }
                     </View>
                </LinearGradient >

@@ -5,6 +5,7 @@ import { StyleSheet } from 'react-native'
 import { useRouter } from 'expo-router'
 import { useResponseFriendRequestMutation } from '@/queries/useFriend'
 import Checkbox from 'expo-checkbox';
+import { useAppContext } from '@/context/AppContext'
 
 interface ContactProps {
      id: number;
@@ -13,25 +14,37 @@ interface ContactProps {
      isRequest?: boolean;
      requestId?: number;
      isSelect?: boolean;
+     isSelected?: number | null; // id selected
      onCheck?: ({ userId, status }: { userId: number, status: "check" | "uncheck" }) => void;
 }
 
-const Contact = ({ id, name, isSelect = false, imageUrl, isRequest = false, requestId, onCheck = ({ userId, status }: { userId: number, status: "check" | "uncheck" }) => {} }: ContactProps) => {
+const Contact = ({ id, name, isSelect = false, isSelected, imageUrl, isRequest = false, requestId, onCheck = ({ userId, status }: { userId: number, status: "check" | "uncheck" }) => { } }: ContactProps) => {
      const router = useRouter();
+     const { socket } = useAppContext();
      const useResponseRequest = useResponseFriendRequestMutation();
-     const [isChecked, setChecked] = useState(false);
+     const [isChecked, setChecked] = useState(isSelected === id);
 
      const avatarUrl = `https://api.dicebear.com/8.x/notionists/svg?seed=${name}`;
-
 
      const handleResponseRequest = async (value: "rejected" | "accepted") => {
           if (!requestId) return;
           try {
-               const response = await useResponseRequest.mutateAsync({
-                    body: { status: value },
-                    id: requestId
-               })
+               // const response = await useResponseRequest.mutateAsync({
+               //      body: { status: value },
+               //      id: requestId
+               // })
 
+               // if (value === "accepted") {
+               //      const { payload: data } = response;
+               //      socket?.joinRoom(Number(data.conversationId), "conversation");
+               // }
+               if (value === "accepted") {
+                    socket?.acceptFriendRequest(requestId);
+               }
+               else {
+                    socket?.rejectFriendRequest(requestId);
+               }
+                              
           } catch (error) {
                alert("Đã có lỗi xảy ra");
           }
@@ -39,7 +52,6 @@ const Contact = ({ id, name, isSelect = false, imageUrl, isRequest = false, requ
      }
 
      return (
-
           <TouchableOpacity
                onPress={() => {
                     if (isRequest || isSelect) return;

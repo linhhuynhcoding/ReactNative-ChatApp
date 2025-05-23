@@ -5,7 +5,6 @@ import Contact from '@/components/Contact';
 
 const Page = () => {
   const { data, isLoading } = useGetFriendList();
-
   const friends = useMemo(() => data?.payload?.friends ?? [], [data]);
   const friendRequests = useMemo(() => data?.payload?.friendRequestsReceived ?? [], [data]);
 

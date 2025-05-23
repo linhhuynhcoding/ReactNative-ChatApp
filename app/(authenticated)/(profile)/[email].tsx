@@ -6,22 +6,26 @@ import { StyleSheet } from 'react-native'
 import { Image } from 'expo-image'
 import { useSentFriendRequestMutation } from '@/queries/useFriend';
 import Toast from 'react-native-toast-message';
+import { Socket } from 'socket.io-client';
+import { useAppContext } from '@/context/AppContext';
 
 const Profile = () => {
 
      const router = useRouter();
 
+     const { socket } = useAppContext();
      const { email, name } = useLocalSearchParams();
      const { data, error } = useGetProfile(email as string);
      const [sentRequest, setSentRequest] = useState(false);
      const useSentFriendRequest = useSentFriendRequestMutation();
 
      const avatarUrl = `https://api.dicebear.com/8.x/notionists/svg?seed=${name}`;
+     const coverUrl = `https://picsum.photos/seed/picsum/800/400`;
 
      const isFriend = useMemo(() => {
           const payload = data?.payload;
 
-          if (data?.payload?.friendRequestsReceived?.length > 0 
+          if (data?.payload?.friendRequestsReceived?.length > 0
                && data?.payload?.friendRequestsReceived?.[0]?.status === 'pending') {
                setSentRequest(true);
           }
@@ -47,9 +51,11 @@ const Profile = () => {
           if (sentRequest) return;
 
           try {
-               const response = await useSentFriendRequest.mutateAsync({
-                    recipientEmail: email as string
-               })
+               // const response = await useSentFriendRequest.mutateAsync({
+               //      recipientEmail: email as string
+               // })
+
+               socket?.sentFriendRequest(email as string)
 
                setSentRequest(true);
           } catch (error) {
@@ -60,7 +66,20 @@ const Profile = () => {
      return (
           <View className='bg-gray-100 flex-1'>
 
-               <View className='bg-white flex h-[200px] border border-b border-gray-200 items-center'>
+               <View className='flex h-[200px] border border-b border-gray-200 items-center'>
+                    <View
+                         style={styles.imageCoverContainer}
+                         className='absolute w-full'
+                    >
+                         <Image
+                              style={styles.imageCover}
+
+                              source={coverUrl}
+                              // source="https://picsum.photos/seed/696/3000/2000"
+                              contentFit="cover"
+                              transition={100}
+                         />
+                    </View>
                     <View
                          style={styles.imageContainer}
                     >
@@ -123,12 +142,23 @@ const Profile = () => {
 
 const styles = StyleSheet.create({
 
+     imageCover: {
+          flex: 1,
+          width: '100%',
+     },
+     imageCoverContainer: {
+          height: "100%",
+          width: "100%",
+          position: 'absolute',
+          zIndex: 0,
+          opacity: 0.8,
+     },
      image: {
           flex: 1,
           width: '100%',
           backgroundColor: '#055',
           borderRadius: 60,
-          borderColor: "#0334",
+          borderColor: "white",
           borderWidth: 4,
      },
      imageContainer: {

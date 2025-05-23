@@ -4,17 +4,19 @@ import { EvilIcons, FontAwesome5, Ionicons } from '@expo/vector-icons'
 import { useGetFriendList } from '@/queries/useFriend';
 import Contact from '@/components/Contact';
 import { useCreateGroupMutation } from '@/queries/useGroup';
-import { CreateGroupBodyDTO } from '@/models/group.schemas';
+import { CreateGroupBodyType } from '@/models/group.schemas';
 import Toast from 'react-native-toast-message';
+import { useAppContext } from '@/context/AppContext';
+import { useRouter } from 'expo-router';
 
 const AddGroup = () => {
 
+  const router = useRouter();
+  const { socket } = useAppContext();
   const { data, isLoading } = useGetFriendList();
   const [checkedList, setCheckedList] = useState<number[]>([]);
   const [name, setName] = useState("");
   const friends = useMemo(() => data?.payload?.friends ?? [], [data]);
-
-  const useCreateGroup = useCreateGroupMutation();
 
   const handleCheck = ({ userId, status }: { userId: number, status: "check" | "uncheck" }) => {
     if (status === "check") {
@@ -27,21 +29,32 @@ const AddGroup = () => {
 
   const handleCreateGroup = async () => {
     try {
-      const body: CreateGroupBodyDTO = {
+      const body: CreateGroupBodyType = {
         avatarUrl: "",
         description: "",
+        
         members: [...checkedList],
         name: name
       };
 
       console.log(body)
 
-      const response = await useCreateGroup.mutateAsync(body);
+      // const response = await useCreateGroup.mutateAsync(body);
+      // const { payload: data } = response;
 
+      // socket?.joinRoom(data.conversationId, "group");
+
+      socket?.createGroup(body);
+
+      router.back();
+            
       Toast.show({
         type: "success",
         text1: "Tạo nhóm thành công!"
       })
+
+
+      
     } catch (error) {
       alert("Đã có lỗi xảy ra!")
     }

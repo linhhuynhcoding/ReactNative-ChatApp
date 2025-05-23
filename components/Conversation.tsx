@@ -10,17 +10,18 @@ interface MessageProps {
      id: number;
      name?: string;
      imageUrl?: string;
-     time?: string;
+     time?: string | Date;
      message?: string;
      isActive?: boolean;
      isSeen?: boolean;
      isMuted?: boolean;
+     isGroup?: boolean;
 }
 
-const Conversation = ({ id, isActive = false, isSeen = false, isMuted = false, name, message, time }: MessageProps) => {
+const Conversation = ({ id, isActive = false, isSeen = false, isMuted = false, name, message, time, isGroup = false }: MessageProps) => {
      const router = useRouter();
 
-     const avatarUrl = `https://api.dicebear.com/8.x/notionists/svg?seed=${name}`;
+     const avatarUrl = `https://api.dicebear.com/${!isGroup ? '8.x/notionists' : '9.x/glass'}/svg?seed=${name}`;
      const lastTime = calculateTime(time ?? "2023-10-01T12:00:00Z")
 
 

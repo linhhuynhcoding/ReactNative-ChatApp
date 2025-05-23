@@ -7,7 +7,7 @@ const SettingLayout = () => {
      return (
           <Stack
                screenOptions={{
-                    header: () => <Header isSearch={false} tittle='Cài đặt' />
+                    header: () => <Header isSearch={false} tittle='Tùy chọn' />
                }}
           />
      )
